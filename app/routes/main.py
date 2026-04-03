@@ -8,6 +8,11 @@ def index():
     return render_template('index.html')
 
 
+@main_bp.route('/tool')
+def tool():
+    return render_template('tool.html')
+
+
 @main_bp.route('/merge')
 def merge():
     return render_template('merge.html')

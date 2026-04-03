@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}PDF Pro — Workspace{% endblock %}
+
+{% block content %}
+<div class="tool-workspace">
+
+  <!-- ── Left Sidebar ── -->
+  <aside class="tool-sidebar">
+
+    <div class="sidebar-header">
+      <span>Files</span>
+      <label class="sidebar-add-btn" for="toolFileInput" title="Add more files">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Add
+        <input type="file" id="toolFileInput" accept=".pdf" multiple style="display:none" aria-hidden="true">
+      </label>
+    </div>
+
+    <!-- Drop zone -->
+    <div class="sidebar-dropzone" id="sidebarDropzone" role="button" tabindex="0"
+         aria-label="Upload PDF files. Drag and drop or press Enter to browse.">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+        <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+        <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+      </svg>
+      <p>Drop PDFs here</p>
+      <p class="sidebar-dropzone-sub">or <em>click to browse</em></p>
+    </div>
+
+    <!-- File list -->
+    <ul class="sidebar-file-list" id="sidebarFileList" role="list" aria-label="Uploaded files"></ul>
+
+    <!-- Empty hint -->
+    <div class="sidebar-empty-hint" id="sidebarEmptyHint">
+      <p>No files yet.<br>Upload a PDF to start.</p>
+    </div>
+
+  </aside>
+
+  <!-- ── Right Preview ── -->
+  <div class="tool-main">
+
+    <!-- Empty state -->
+    <div class="preview-empty-state" id="previewEmpty">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.75" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+      </svg>
+      <h3>No files loaded</h3>
+      <p>Upload PDFs from the left panel to preview and organize your pages</p>
+      <ul class="preview-tip-list">
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+          Drag pages to reorder them
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          Click pages to select for extraction
+        </li>
+        <li>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+          Merge multiple files into one
+        </li>
+      </ul>
+    </div>
+
+    <!-- Page grid -->
+    <div class="page-preview-grid" id="pageGrid" role="list" aria-label="PDF pages"></div>
+
+    <!-- Action bar (hidden until files loaded) -->
+    <div class="tool-action-bar hidden" id="toolActionBar">
+      <div class="tool-action-left">
+        <div class="input-group" style="width:190px">
+          <input type="text" class="form-input form-input-sm" id="toolOutputName"
+                 value="output" maxlength="100" placeholder="filename"
+                 aria-label="Output filename">
+          <span class="input-addon">.pdf</span>
+        </div>
+        <span class="action-status-hint" id="actionHint"></span>
+      </div>
+      <div class="tool-action-right">
+        <button class="btn btn-ghost btn-sm" id="btnClear" type="button">Clear all</button>
+        <button class="btn btn-secondary btn-sm" id="btnSplit" type="button" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="8" height="18" rx="2"/>
+            <rect x="13" y="3" width="8" height="8" rx="2"/>
+            <rect x="13" y="13" width="8" height="8" rx="2"/>
+          </svg>
+          Extract Selected
+        </button>
+        <button class="btn btn-primary btn-sm" id="btnMerge" type="button" disabled>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+          </svg>
+          <span id="btnMergeLabel">Merge &amp; Download</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/Sortable.min.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/tool.js') }}" defer></script>
+{% endblock %}
