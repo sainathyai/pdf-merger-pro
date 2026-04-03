@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}PDF Merger Pro — Merge, Split & Reorder PDFs{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow fade-in-up">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      Files never leave your network
+    </div>
+
+    <h1 class="fade-in-up" style="animation-delay:50ms">
+      Your private<br><span>PDF toolkit</span>
+    </h1>
+
+    <p class="hero-subtitle fade-in-up" style="animation-delay:100ms">
+      Merge, split, and reorder PDF documents directly in your browser.
+      No subscriptions. No uploads to strangers' servers. Just fast, private PDF tools.
+    </p>
+
+    <div class="hero-cta fade-in-up" style="animation-delay:150ms">
+      <a href="{{ url_for('main.merge') }}" class="btn btn-primary btn-lg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+        </svg>
+        Start Merging
+      </a>
+      <a href="#tools" class="btn btn-secondary btn-lg">
+        See All Tools
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Tools ── -->
+<section class="section" id="tools" style="padding-top:0">
+  <div class="container">
+    <div class="feature-grid">
+
+      <!-- Merge -->
+      <a href="{{ url_for('main.merge') }}" class="feature-card fade-in-up">
+        <div class="feature-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+          </svg>
+        </div>
+        <h3>Merge PDFs</h3>
+        <p>Combine multiple PDF files into one document. Drag to reorder before merging.</p>
+        <span class="feature-card-arrow">
+          Get started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- Split -->
+      <a href="{{ url_for('main.split') }}" class="feature-card fade-in-up" style="animation-delay:50ms">
+        <div class="feature-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="8" height="18" rx="2"/>
+            <rect x="13" y="3" width="8" height="8" rx="2"/>
+            <rect x="13" y="13" width="8" height="8" rx="2"/>
+          </svg>
+        </div>
+        <h3>Split PDF</h3>
+        <p>Extract specific pages or page ranges from any PDF into a new file.</p>
+        <span class="feature-card-arrow">
+          Get started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+      <!-- Reorder -->
+      <a href="{{ url_for('main.reorder') }}" class="feature-card fade-in-up" style="animation-delay:100ms">
+        <div class="feature-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+            <path d="M18 3l3 3-3 3M6 21l-3-3 3-3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Reorder Pages</h3>
+        <p>Drag and drop to rearrange pages, rotate them, or remove unwanted ones.</p>
+        <span class="feature-card-arrow">
+          Get started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ── -->
+<section class="section" style="background:var(--bg-surface);padding:64px 0;">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">How it works</span>
+      <h2>Done in three steps</h2>
+      <p>No sign-up. No waiting. Just upload and go.</p>
+    </div>
+
+    <div class="steps-grid">
+      <div class="step fade-in-up">
+        <div class="step-number">1</div>
+        <h3>Upload</h3>
+        <p>Drop your PDF files into the upload zone or click to browse your device.</p>
+      </div>
+      <div class="step fade-in-up" style="animation-delay:75ms">
+        <div class="step-number">2</div>
+        <h3>Arrange</h3>
+        <p>Drag to reorder files or pages, rotate, delete — you're in full control.</p>
+      </div>
+      <div class="step fade-in-up" style="animation-delay:150ms">
+        <div class="step-number">3</div>
+        <h3>Download</h3>
+        <p>Click download and get your processed PDF instantly. Files auto-delete after 30 minutes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why section ── -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Why PDF Merger Pro</span>
+      <h2>Built for privacy and speed</h2>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-item fade-in-up">
+        <span class="why-item-icon" aria-hidden="true">🔒</span>
+        <h4>Private by default</h4>
+        <p>Files are processed locally on your server and never sent to third-party services.</p>
+      </div>
+      <div class="why-item fade-in-up" style="animation-delay:50ms">
+        <span class="why-item-icon" aria-hidden="true">⚡</span>
+        <h4>Lightning fast</h4>
+        <p>Merge 10 files in seconds. No upload queues, no waiting for a remote server.</p>
+      </div>
+      <div class="why-item fade-in-up" style="animation-delay:100ms">
+        <span class="why-item-icon" aria-hidden="true">📱</span>
+        <h4>Works everywhere</h4>
+        <p>Fully responsive and touch-friendly. Use it on your phone, tablet, or desktop.</p>
+      </div>
+      <div class="why-item fade-in-up" style="animation-delay:150ms">
+        <span class="why-item-icon" aria-hidden="true">🌙</span>
+        <h4>Dark mode</h4>
+        <p>Auto-detects your system preference or toggle manually. Easy on the eyes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

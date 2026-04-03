@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Merge PDFs — PDF Merger Pro{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="page-header">
+    <h1>Merge PDFs</h1>
+    <p>Combine multiple PDF files into a single document. Drag to reorder before merging.</p>
+  </div>
+
+  <!-- ── Upload Zone ── -->
+  <div class="card mb-6">
+    <div class="card-body" style="padding:0">
+      <div class="upload-zone" id="mergeUploadZone" role="button" tabindex="0"
+           aria-label="Upload PDF files. Drag and drop or press Enter to browse."
+           aria-describedby="mergeUploadHint">
+        <input type="file" id="mergeFileInput" accept=".pdf" multiple aria-hidden="true">
+
+        <svg class="upload-zone-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+          <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+          <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+        </svg>
+
+        <p class="upload-zone-title">Drag &amp; drop PDF files here</p>
+        <p class="upload-zone-subtitle">or <span>click to browse</span> your files</p>
+        <p class="upload-zone-hint" id="mergeUploadHint">PDF only &bull; Max 100 MB per file &bull; Max 500 MB total</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── File List (hidden until files uploaded) ── -->
+  <div id="mergeFilesSection" class="hidden">
+
+    <div class="section-label mb-4">
+      <span>Files to merge <span class="badge badge-accent" id="mergeFileCount">0</span></span>
+      <button class="btn btn-ghost btn-sm" id="mergeAddMore" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Add more files
+      </button>
+    </div>
+
+    <ul class="file-list" id="mergeFileList" role="list" aria-label="Files to merge"></ul>
+
+    <!-- ── Options ── -->
+    <div class="card mt-6">
+      <div class="card-body">
+        <div class="section-label" style="margin-bottom:16px">Output options</div>
+
+        <div style="max-width:420px">
+          <label class="form-label" for="outputFilename">Output filename</label>
+          <div class="input-group">
+            <input type="text" class="form-input" id="outputFilename"
+                   value="merged-document" maxlength="100"
+                   placeholder="merged-document"
+                   aria-label="Output filename without extension">
+            <span class="input-addon">.pdf</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Progress (hidden until merging) ── -->
+    <div id="mergeProgress" class="hidden mt-6">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="mergeProgressBar" role="progressbar"
+             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+      </div>
+      <p class="progress-label" id="mergeProgressLabel">Preparing merge...</p>
+    </div>
+
+    <!-- ── Action ── -->
+    <div class="mt-6" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-primary btn-lg" id="mergeMergeBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+        </svg>
+        Merge &amp; Download
+      </button>
+      <button class="btn btn-ghost" id="mergeClearBtn" type="button">
+        Clear all
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ── Empty state (shown when no files yet) ── -->
+  <div id="mergeEmptyState" class="empty-state hidden">
+    <svg class="empty-state-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+    </svg>
+    <p class="empty-state-title">No files uploaded yet</p>
+    <p class="empty-state-text">Drop PDF files into the zone above to get started</p>
+  </div>
+
+</div>
+
+<!-- Hidden file input for "Add more" -->
+<input type="file" id="mergeAddMoreInput" accept=".pdf" multiple style="display:none" aria-hidden="true">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/merge.js') }}" defer></script>
+<!-- SortableJS CDN -->
+<script src="{{ url_for('static', filename='js/Sortable.min.js') }}" defer></script>
+{% endblock %}

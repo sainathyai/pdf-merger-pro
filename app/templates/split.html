@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Split PDF — PDF Merger Pro{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <div class="page-header">
+    <h1>Split PDF</h1>
+    <p>Extract specific pages or page ranges from your PDF document.</p>
+  </div>
+
+  <!-- ── Upload Zone ── -->
+  <div id="splitUploadSection">
+    <div class="card mb-6">
+      <div class="card-body" style="padding:0">
+        <div class="upload-zone" id="splitUploadZone" role="button" tabindex="0"
+             aria-label="Upload a PDF file. Drag and drop or press Enter to browse."
+             aria-describedby="splitUploadHint">
+          <input type="file" id="splitFileInput" accept=".pdf" aria-hidden="true">
+
+          <svg class="upload-zone-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+            <polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+          </svg>
+
+          <p class="upload-zone-title">Drag &amp; drop a PDF here</p>
+          <p class="upload-zone-subtitle">or <span>click to browse</span></p>
+          <p class="upload-zone-hint" id="splitUploadHint">PDF only &bull; Max 100 MB</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── File info + controls (hidden until file uploaded) ── -->
+  <div id="splitWorkspace" class="hidden">
+
+    <!-- File info bar -->
+    <div class="file-info-bar mb-6" id="splitFileInfo">
+      <div class="file-info-bar-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div class="file-info-bar-details">
+        <p class="file-info-bar-name" id="splitFileName">document.pdf</p>
+        <p class="file-info-bar-meta" id="splitFileMeta">0 pages &bull; 0 MB</p>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="splitChangeFile" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Change file
+      </button>
+    </div>
+
+    <!-- Selection mode toggle -->
+    <div class="card mb-6">
+      <div class="card-body">
+        <div class="section-label" style="margin-bottom:16px">Selection mode</div>
+
+        <div class="radio-group" id="splitModeGroup" role="radiogroup" aria-label="Page selection mode">
+          <label class="radio-option selected" id="modeVisualLabel">
+            <input type="radio" name="splitMode" value="visual" checked>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="9" rx="1"/><rect x="3" y="15" width="7" height="6" rx="1"/><rect x="14" y="15" width="7" height="6" rx="1"/></svg>
+            Select pages visually
+          </label>
+          <label class="radio-option" id="modeRangeLabel">
+            <input type="radio" name="splitMode" value="range">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h7"/></svg>
+            Enter page range
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual selection panel -->
+    <div id="splitVisualPanel">
+      <div class="section-label mb-4">
+        <span>Pages <span id="splitSelectedCount" class="badge badge-accent">0 selected</span></span>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="splitSelectAll" type="button">Select all</button>
+          <button class="btn btn-ghost btn-sm" id="splitDeselectAll" type="button">Deselect all</button>
+        </div>
+      </div>
+      <div class="thumbnail-grid" id="splitThumbnailGrid" role="list" aria-label="PDF pages"></div>
+    </div>
+
+    <!-- Range input panel (hidden by default) -->
+    <div id="splitRangePanel" class="hidden">
+      <div class="card">
+        <div class="card-body">
+          <label class="form-label" for="splitRangeInput">Page numbers or ranges</label>
+          <input type="text" class="form-input" id="splitRangeInput"
+                 placeholder="e.g. 1-3, 5, 8-12"
+                 aria-describedby="splitRangeHint"
+                 style="max-width:360px">
+          <p class="text-sm text-muted mt-4" id="splitRangeHint" style="margin-top:8px">
+            Separate pages with commas. Use a dash for ranges. Example: <strong>1-3, 5, 8-12</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div id="splitProgress" class="hidden mt-6">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="splitProgressBar" role="progressbar"
+             aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div>
+      </div>
+      <p class="progress-label" id="splitProgressLabel">Extracting pages...</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-6" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-primary btn-lg" id="splitExtractBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="3" y="3" width="8" height="18" rx="2"/>
+          <rect x="13" y="3" width="8" height="8" rx="2"/>
+          <rect x="13" y="13" width="8" height="8" rx="2"/>
+        </svg>
+        Extract Selected Pages
+      </button>
+      <button class="btn btn-secondary" id="splitAllBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M12 3v18M3 12h18" stroke-linecap="round"/>
+        </svg>
+        Split All (1 PDF per page)
+      </button>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/split.js') }}" defer></script>
+{% endblock %}
